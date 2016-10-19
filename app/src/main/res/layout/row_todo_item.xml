@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:background="?android:selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp">
+
+  <TextView
+      android:id="@+id/item_name"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_toLeftOf="@+id/item_checkbox"
+      android:textSize="28sp"
+      android:gravity="center_vertical"
+      android:text="Todo Entry"/>
+
+  <CheckBox
+      android:id="@+id/item_checkbox"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_centerVertical="true"
+      android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
