@@ -30,7 +30,7 @@ public class ListActivity extends AppCompatActivity {
         tasks = TaskManager.getTasks();
         if (tasks.isEmpty()) {
             Task task = new Task();
-            task.setTitle("My first task");
+            task.setTitle("Keep Learning Android!");
             TaskManager.addTask(task);
         }
 
