@@ -12,10 +12,8 @@ class TaskManager {
 
     private TaskManager(TaskStateManager taskStateManager) {
         this.taskStateManager = taskStateManager;
-        synchronized (taskList) {
-            taskList.clear();
-            taskList.addAll(this.taskStateManager.loadTasks());
-        }
+        taskList.clear();
+        taskList.addAll(this.taskStateManager.loadTasks());
     }
 
     static void init(final TaskStateManager taskStateManager) {
@@ -35,25 +33,21 @@ class TaskManager {
     @SuppressWarnings("WeakerAccess")
     @NonNull
     static List<Task> getTasks() {
-        synchronized (getInstance().taskList) {
-            return getInstance().taskList;
-        }
-    }
-
-    private static void saveTasks(@NonNull final List<Task> taskList) {
-        synchronized (getInstance().taskList) {
-            getInstance().taskStateManager.saveTasks(taskList);
-        }
-    }
-
-    static void updateTasks() {
-        saveTasks(getTasks());
+        return getInstance().taskList;
     }
 
     static void addTask(Task task) {
-        synchronized (getInstance().taskList) {
-            getInstance().taskList.add(task);
-        }
-        saveTasks(getTasks());
+        getInstance().taskList.add(task);
+        getInstance().saveTasks(getTasks());
     }
+
+    static void updateTask(@NonNull Task task) {
+        getInstance().taskList.set(getInstance().taskList.indexOf(task), task);
+        getInstance().saveTasks(getTasks());
+    }
+
+    private void saveTasks(@NonNull final List<Task> taskList) {
+        getInstance().taskStateManager.saveTasks(taskList);
+    }
+
 }

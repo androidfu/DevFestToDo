@@ -1,12 +1,12 @@
 package com.chscodecamp.android.bettertodo;
 
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,9 +14,11 @@ import java.util.List;
 class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapter.TaskViewHolder> {
 
     private List<Task> tasks;
+    private Callback callback;
 
-    TaskRecyclerAdapter(List<Task> tasks) {
+    TaskRecyclerAdapter(List<Task> tasks, Callback callback) {
         this.tasks = tasks;
+        this.callback = callback;
     }
 
     @Override
@@ -34,12 +36,14 @@ class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapter.TaskV
         setStrikethrough(task.isCompleted(), holder.itemName);
 
         holder.checkBox.setChecked(task.isCompleted());
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                task.setCompleted(isChecked);
-                TaskManager.updateTasks();
+            public void onClick(View view) {
+                task.setCompleted(holder.checkBox.isChecked());
                 setStrikethrough(task.isCompleted(), holder.itemName);
+                if (callback != null) {
+                    callback.onTaskUpdated(task);
+                }
             }
         });
     }
@@ -55,6 +59,10 @@ class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapter.TaskV
         } else {
             textView.setPaintFlags(0);
         }
+    }
+
+    interface Callback {
+        void onTaskUpdated(@NonNull Task task);
     }
 
     class TaskViewHolder extends RecyclerView.ViewHolder {

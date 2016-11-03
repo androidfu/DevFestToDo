@@ -5,58 +5,32 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import org.json.JSONException;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 class SharedPreferenceStateManager implements TaskStateManager {
 
-    private static final String TAG = SharedPreferenceStateManager.class.getSimpleName();
-    private final Object tasks = new Object();
+    private static final String SAVED_TASKS = "savedTasks";
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor preferenceEditor;
 
-    @SuppressLint("CommitPrefEdits")
     SharedPreferenceStateManager(Application application) {
         sharedPreferences = application.getSharedPreferences(application.getPackageName(), Context.MODE_PRIVATE);
-        preferenceEditor = sharedPreferences.edit();
     }
 
-    @Override
+    @SuppressLint("CommitPrefEdits")
     public void saveTasks(@NonNull List<Task> taskList) {
-        synchronized (tasks) {
-            for (int i = 0; i < taskList.size(); i++) {
-                try {
-                    preferenceEditor.putString(String.format(Locale.ENGLISH, "%d", i), taskList.get(i).toJsonString()).apply();
-                } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-        }
+        sharedPreferences.edit().putString(SAVED_TASKS, new Gson().toJson(taskList)).commit();
     }
 
-    @Override
     @NonNull
     public List<Task> loadTasks() {
-        List<Task> taskList = new ArrayList<>();
-        synchronized (tasks) {
-            Map<String, ?> keys = sharedPreferences.getAll();
-            for (Map.Entry<String, ?> entry : keys.entrySet()) {
-                Task task;
-                try {
-                    task = new Task((String) entry.getValue());
-                } catch (JSONException | IllegalArgumentException e) {
-                    Log.e(TAG, e.getMessage());
-                    continue;
-                }
-                taskList.add(task);
-            }
-        }
-        return taskList;
+        Task[] savedTasks = new Gson().fromJson(sharedPreferences.getString(SAVED_TASKS, null), Task[].class);
+        if (savedTasks != null && savedTasks.length > 0) {
+            return new ArrayList<>(Arrays.asList(savedTasks));
+        } else return new ArrayList<>();
     }
 }
