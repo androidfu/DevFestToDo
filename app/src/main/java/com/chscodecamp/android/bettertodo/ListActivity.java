@@ -38,8 +38,6 @@ public class ListActivity extends AppCompatActivity implements TaskRecyclerAdapt
         addItemEditText = (EditText) findViewById(R.id.add_item_edit_text);
         addItem = (ImageButton) findViewById(R.id.add_item);
 
-        tasks = TaskManager.getTasks();
-
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +70,8 @@ public class ListActivity extends AppCompatActivity implements TaskRecyclerAdapt
     @Override
     protected void onResume() {
         super.onResume();
+
+        tasks = TaskManager.getTasks();
 
         if (tasks.isEmpty()) {
             Task task = new Task("Start Learning Android!");
