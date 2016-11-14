@@ -3,20 +3,20 @@
     package="com.chscodecamp.android.bettertodo">
 
     <application
-        android:name=".SimpleToDoApplication"
+        android:name=".BetterToDoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ListActivity"
+            android:name=".ToDoListActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity-alias
             android:name=".LauncherActivity"
             android:label="@string/app_name"
-            android:targetActivity=".ListActivity">
+            android:targetActivity=".ToDoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

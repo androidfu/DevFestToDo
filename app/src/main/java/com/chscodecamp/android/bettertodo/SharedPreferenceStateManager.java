@@ -31,6 +31,8 @@ class SharedPreferenceStateManager implements TaskStateManager {
         Task[] savedTasks = new Gson().fromJson(sharedPreferences.getString(SAVED_TASKS, null), Task[].class);
         if (savedTasks != null && savedTasks.length > 0) {
             return new ArrayList<>(Arrays.asList(savedTasks));
-        } else return new ArrayList<>();
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

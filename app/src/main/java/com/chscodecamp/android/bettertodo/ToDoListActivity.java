@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity implements TaskRecyclerAdapter.Callback {
+public class ToDoListActivity extends AppCompatActivity implements TaskRecyclerAdapter.Callback {
 
     private RecyclerView recyclerView;
     private EditText addItemEditText;

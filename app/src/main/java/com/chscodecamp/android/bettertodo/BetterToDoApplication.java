@@ -2,7 +2,7 @@ package com.chscodecamp.android.bettertodo;
 
 import android.app.Application;
 
-public class SimpleToDoApplication extends Application {
+public class BetterToDoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
