@@ -13,7 +13,11 @@ class TaskManager {
     private TaskManager(TaskStateManager taskStateManager) {
         this.taskStateManager = taskStateManager;
         taskList.clear();
-        taskList.addAll(this.taskStateManager.loadTasks());
+        List<Task> storedTasks = this.taskStateManager.loadTasks();
+        if (storedTasks.isEmpty()) {
+            storedTasks = this.createDefaultEntries();
+        }
+        taskList.addAll(storedTasks);
     }
 
     static void init(final TaskStateManager taskStateManager) {
@@ -36,12 +40,12 @@ class TaskManager {
         return getInstance().taskList;
     }
 
-    static void addTask(Task task) {
+    static void addTask(@NonNull final Task task) {
         getInstance().taskList.add(task);
         getInstance().saveTasks(getTasks());
     }
 
-    static void updateTask(@NonNull Task task) {
+    static void updateTask(@NonNull final Task task) {
         getInstance().taskList.set(getInstance().taskList.indexOf(task), task);
         getInstance().saveTasks(getTasks());
     }
@@ -50,4 +54,17 @@ class TaskManager {
         getInstance().taskStateManager.saveTasks(taskList);
     }
 
+    @NonNull
+    private List<Task> createDefaultEntries() {
+        final List<Task> defaultTasks = new ArrayList<>();
+        Task task = new Task("Start Learning Android!");
+        task.setCompleted(true);
+        defaultTasks.add(task);
+        task = new Task("Keep Learning Android!");
+        task.setCompleted(true);
+        defaultTasks.add(task);
+        task = new Task("Tasks in the Cloud!");
+        defaultTasks.add(task);
+        return defaultTasks;
+    }
 }

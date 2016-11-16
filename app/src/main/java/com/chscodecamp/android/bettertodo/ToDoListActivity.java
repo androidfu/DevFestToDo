@@ -73,14 +73,6 @@ public class ToDoListActivity extends AppCompatActivity implements TaskRecyclerA
 
         tasks = TaskManager.getTasks();
 
-        if (tasks.isEmpty()) {
-            Task task = new Task("Start Learning Android!");
-            task.setCompleted(true);
-            TaskManager.addTask(task);
-            task = new Task("Keep Learning Android!");
-            TaskManager.addTask(task);
-        }
-
         if (taskRecyclerAdapter == null) {
             taskRecyclerAdapter = new TaskRecyclerAdapter(tasks, this);
             recyclerView.setAdapter(taskRecyclerAdapter);
